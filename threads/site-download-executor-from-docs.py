@@ -2,14 +2,6 @@ import concurrent.futures
 import urllib.request
 import time
 
-URLS = ['http://www.foxnews.com/',
-        'http://www.cnn.com/',
-        'http://europe.wsj.com/',
-        'http://www.bbc.co.uk/',
-        'http://some-made-up-domain.com/',
-        'https://rentcars.com'
-        ]
-
 
 # Retrieve a single page and report the URL and contents
 def load_url(url, timeout):
@@ -17,11 +9,11 @@ def load_url(url, timeout):
         return conn.read()
 
 
-def download_async():
+def download_async(urls):
     # We can use a with statement to ensure threads are cleaned up promptly
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
         # Start the load operations and mark each future with its URL
-        future_to_url = {executor.submit(load_url, url, 60): url for url in URLS}
+        future_to_url = {executor.submit(load_url, url, 60): url for url in urls}
         for future in concurrent.futures.as_completed(future_to_url):
             url = future_to_url[future]
             try:
@@ -32,8 +24,8 @@ def download_async():
                 print('%r page is %d bytes' % (url, len(data)))
 
 
-def download_sync():
-    for url in URLS:
+def download_sync(urls):
+    for url in urls:
         try:
             data = load_url(url, 60)
         except Exception as exc:
@@ -45,7 +37,15 @@ def download_sync():
 if __name__ == "__main__":
     start = time.time()
 
-    download_sync()
+    fd = open('../files/urls.txt', 'r')
+    lines = fd.readlines()
 
+    lista = []
+    for ln in lines:
+        lista.append(ln)
+
+    download_async(lista)
+
+    fd.close()
     end = time.time() - start
     print('duration ', end)
