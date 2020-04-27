@@ -10,13 +10,13 @@ class AnaliseCredito:
 
 
 class CadastroProduto:
-    def __init__(self, analiseCredito, desconto):
-        self.analiseCredito = analiseCredito
+    def __init__(self, analise_credito, desconto):
+        self.analise_credito = analise_credito
         self.desconto = desconto
 
     def cadastrar_massivo(self, quantidade):
         produtos_cadastrados = []
-        limite = self.analiseCredito.obter_limite()
+        limite = self.analise_credito.obter_limite()
         while len(produtos_cadastrados) != quantidade:
             try:
                 nome_produto = Console().string("escreva o nome de um produto: ")
@@ -45,7 +45,7 @@ class CadastroProduto:
         elif percentual_90 <= produto.preco <= limite:
             print("Liberado, você pode parcelar em 3 ou mais vezes")
 
-        if len(nome_dono_loja) <= produto.preco <= self.analiseCredito.cliente.idade:
+        if len(nome_dono_loja) <= produto.preco <= self.analise_credito.cliente.idade:
             produto.desconto = self.desconto
             print("voçê ganhou um desconto de R${:.2f}, preco do produto R${:.2f}".format(produto.desconto, produto.obter_preco()))
 
@@ -123,17 +123,17 @@ if __name__ == '__main__':
     print(cliente)
 
     # análise de crédito do cliente
-    analiseCredito = AnaliseCredito(cliente)
-    limite = analiseCredito.obter_limite()
+    analise_credito = AnaliseCredito(cliente)
+    limite = analise_credito.obter_limite()
     print("você pode gastar até R${:.2f}".format(limite))
 
     # cadastro de produtos
-    cadastro = CadastroProduto(analiseCredito, desconto)
+    cadastro = CadastroProduto(analise_credito, desconto)
     quantidade = Console().integer("quantos produtos você quer cadastrar? ")
-    produtos_cadastrados = cadastro.cadastrar_massivo(quantidade)
+    produtos = cadastro.cadastrar_massivo(quantidade)
 
     # análise de crédito final para os produtos cadastrados
-    preco_total_produtos = sum(p.obter_preco() for p in produtos_cadastrados)
+    preco_total_produtos = sum(p.obter_preco() for p in produtos)
     print("Preço total produtos = R${:.2f}".format(preco_total_produtos))
 
     if preco_total_produtos >= limite:
