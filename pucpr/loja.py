@@ -125,7 +125,7 @@ if __name__ == '__main__':
     # análise de crédito do cliente
     analise_credito = AnaliseCredito(cliente)
     limite = analise_credito.obter_limite()
-    print("você pode gastar até R${:.2f}".format(limite))
+    print("Crédito liberado R${:.2f}".format(limite))
 
     # cadastro de produtos
     cadastro = CadastroProduto(analise_credito, desconto)
@@ -134,11 +134,11 @@ if __name__ == '__main__':
 
     # análise de crédito final para os produtos cadastrados
     preco_total_produtos = sum(p.obter_preco() for p in produtos)
-    print("Preço total produtos = R${:.2f}".format(preco_total_produtos))
+    print("Preço total produtos R${:.2f}".format(preco_total_produtos))
 
     if preco_total_produtos >= limite:
-        print("Seu limite não permite comprar os produtos cadastrados")
-        print("Limite = R${:.2f}".format(limite))
+        print("Seu crédito atual não permite adquirir estes produtos")
+        print("Limite R${:.2f}".format(limite))
     else:
         restante = limite - preco_total_produtos
-        print("Saldo disponível do seu limite = R${:.2f}".format(restante))
+        print("Crédito disponível R${:.2f}".format(restante))
